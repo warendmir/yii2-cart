@@ -1,6 +1,7 @@
 <?php
 
 namespace devanych\cart;
+use common\models\Category;
 
 class CartItem
 {
@@ -49,6 +50,16 @@ class CartItem
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Returns an category_url for item
+     * @param integer $id
+     * @return CartItem
+     */
+    public function getCategory($id)
+    {
+        return Category::find()->select('url')->where(['id'=>$id])->one();
     }
 
     /**
