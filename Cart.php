@@ -75,17 +75,29 @@ class Cart extends BaseObject
      * Add an item to the cart
      * @param object $product
      * @param integer $quantity
+     * @param string $option
+     * @param array $options_prices
      * @return void
      */
-    public function add($product, $quantity)
+    public function add($product, $quantity, $option = false, $options_prices = array())
     {
         $this->loadItems();
-        if (isset($this->items[$product->{$this->params['productFieldId']}])) {
-            $this->plus($product->{$this->params['productFieldId']}, $quantity);
+        if ($option) {
+            if (isset($this->items[$product->{$this->params['productFieldId']}.'-'.$option])) {
+                $this->plus($product->{$this->params['productFieldId']}, $quantity);
+            } else {
+                $this->items[$product->{$this->params['productFieldId']}.'-'.$option] = new CartItem($product, $quantity, $this->params, $option,$options_prices);
+                ksort($this->items, SORT_NUMERIC);
+                $this->saveItems();
+            }
         } else {
-            $this->items[$product->{$this->params['productFieldId']}] = new CartItem($product, $quantity, $this->params);
-            ksort($this->items, SORT_NUMERIC);
-            $this->saveItems();
+            if (isset($this->items[$product->{$this->params['productFieldId']}])) {
+                $this->plus($product->{$this->params['productFieldId']}, $quantity);
+            } else {
+                $this->items[$product->{$this->params['productFieldId']}] = new CartItem($product, $quantity, $this->params);
+                ksort($this->items, SORT_NUMERIC);
+                $this->saveItems();
+            }
         }
     }
 
@@ -93,13 +105,21 @@ class Cart extends BaseObject
      * Adding item quantity in the cart
      * @param integer $id
      * @param integer $quantity
+     * @param string $option
+     * @param array $options_prices
      * @return void
      */
-    public function plus($id, $quantity)
+    public function plus($id, $quantity, $option = false)
     {
         $this->loadItems();
-        if (isset($this->items[$id])) {
-            $this->items[$id]->setQuantity($quantity + $this->items[$id]->getQuantity());
+        if ($option){
+            if (isset($this->items[$id.'-'.$option])) {
+                $this->items[$id.'-'.$option]->setQuantity($quantity + $this->items[$id.'-'.$option]->getQuantity());
+            }
+        } else {
+            if (isset($this->items[$id])) {
+                $this->items[$id]->setQuantity($quantity + $this->items[$id]->getQuantity());
+            }
         }
         $this->saveItems();
     }
@@ -110,12 +130,19 @@ class Cart extends BaseObject
      * @param integer $quantity
      * @return void
      */
-    public function change($id, $quantity)
+    public function change($id, $quantity, $option = false)
     {
         $this->loadItems();
-        if (isset($this->items[$id])) {
-            $this->items[$id]->setQuantity($quantity);
+        if ($option) {
+            if (isset($this->items[$id.'-'.$option])) {
+                $this->items[$id.'-'.$option]->setQuantity($quantity);
+            }
+        } else {
+            if (isset($this->items[$id])) {
+                $this->items[$id]->setQuantity($quantity);
+            }
         }
+
         $this->saveItems();
     }
 
@@ -124,12 +151,19 @@ class Cart extends BaseObject
      * @param integer $id
      * @return void
      */
-    public function remove($id)
+    public function remove($id,$option = false)
     {
         $this->loadItems();
-        if (array_key_exists($id, $this->items)) {
-            unset($this->items[$id]);
+        if ($option) {
+            if (array_key_exists($id.'-'.$option, $this->items)) {
+                unset($this->items[$id.'-'.$option]);
+            }
+        } else {
+            if (array_key_exists($id, $this->items)) {
+                unset($this->items[$id]);
+            }
         }
+
         $this->saveItems();
     }
 
@@ -158,10 +192,14 @@ class Cart extends BaseObject
      * @param integer $id
      * @return CartItem
      */
-    public function getItem($id)
+    public function getItem($id,$option = false)
     {
         $this->loadItems();
-        return isset($this->items[$id]) ? $this->items[$id] : null;
+        if ($option) {
+            return isset($this->items[$id.'-'.$option]) ? $this->items[$id.'-'.$option] : null;
+        } else {
+            return isset($this->items[$id]) ? $this->items[$id] : null;
+        }
     }
 
     /**
