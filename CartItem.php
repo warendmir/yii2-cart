@@ -17,12 +17,16 @@ class CartItem
      * @var array $params Custom configuration params
      */
     private $params;
+    private $options = false;
+    private $options_prices = array();
 
-    public function __construct($product, $quantity, array $params)
+    public function __construct($product, $quantity, array $params, $options = false, $options_prices = array())
     {
         $this->product = $product;
         $this->quantity = $quantity;
         $this->params = $params;
+        $this->options = $options;
+        $this->options_prices = $options_prices;
     }
 
     /**
@@ -40,7 +44,12 @@ class CartItem
      */
     public function getPrice()
     {
-        return $this->product->{$this->params['productFieldPrice']};
+        if ($this->getOptions()) {
+            $prices = array_sum($this->getOptionsPrices());
+            return $this->product->{$this->params['productFieldPrice']} + $prices;
+        } else {
+            return $this->product->{$this->params['productFieldPrice']};
+        }
     }
 
     /**
@@ -88,5 +97,24 @@ class CartItem
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+    }
+
+    public function getOptions()
+    {
+        return $this->options?$this->options:false;
+    }
+
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+    public function getOptionsPrices()
+    {
+        return $this->options_prices;
+    }
+
+    public function setOptionsPrices($options_prices)
+    {
+        $this->options_prices = $options_prices;
     }
 }
