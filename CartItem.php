@@ -65,6 +65,15 @@ class CartItem
             return $this->product->{$this->params['productFieldDiscount']};
         }
     }
+    
+    /**
+     * Returns that discount set or not
+     * @return boolean
+     */
+    public function getIsDiscount()
+    {
+        return !empty($this->product->{$this->params['productFieldDiscount']}) && $this->product->{$this->params['productFieldDiscount']} != 0 && $this->product->{$this->params['productFieldDiscount']}<$this->product->{$this->params['productFieldPrice']}?true:false;
+    }
 
     /**
      * Returns the product, AR model
