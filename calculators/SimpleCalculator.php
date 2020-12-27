@@ -21,7 +21,7 @@ class SimpleCalculator implements CalculatorInterface
      * @param \devanych\cart\CartItem[] $items
      * @return integer
      */
-    public function getDiscountCost(array $items)
+    public function getOldPriceCost(array $items)
     {
         $cost = 0;
         foreach ($items as $item) {
