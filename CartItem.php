@@ -51,7 +51,7 @@ class CartItem
             return $this->product->{$this->params['productFieldPrice']};
         }
     }
-    
+
     /**
      * Returns the discount price of the item
      * @return integer|float
@@ -92,6 +92,15 @@ class CartItem
     public function getCost()
     {
         return ceil($this->getPrice() * $this->quantity);
+    }
+
+    /**
+     * Returns the discount cost of the item
+     * @return integer|float
+     */
+    public function getDiscountCost()
+    {
+        return ceil($this->getDiscount() * $this->quantity);
     }
 
     /**
