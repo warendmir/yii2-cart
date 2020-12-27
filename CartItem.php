@@ -56,23 +56,23 @@ class CartItem
      * Returns the discount price of the item
      * @return integer|float
      */
-    public function getDiscount()
+    public function getOldPrice()
     {
         if ($this->getOptions()) {
             $prices = array_sum($this->getOptionsPrices());
-            return $this->product->{$this->params['productFieldDiscount']} + $prices;
+            return $this->product->{$this->params['productFieldOldPrice']} + $prices;
         } else {
-            return $this->product->{$this->params['productFieldDiscount']};
+            return $this->product->{$this->params['productFieldOldPrice']};
         }
     }
-    
+
     /**
      * Returns that discount set or not
      * @return boolean
      */
-    public function getIsDiscount()
+    public function getIsOldPrice()
     {
-        return !empty($this->product->{$this->params['productFieldDiscount']}) && $this->product->{$this->params['productFieldDiscount']} != 0 && $this->product->{$this->params['productFieldDiscount']}<$this->product->{$this->params['productFieldPrice']}?true:false;
+        return !empty($this->product->{$this->params['productFieldOldPrice']}) && $this->product->{$this->params['productFieldOldPrice']} != 0 && $this->product->{$this->params['productFieldOldPrice']} > $this->product->{$this->params['productFieldPrice']}?true:false;
     }
 
     /**
@@ -107,9 +107,9 @@ class CartItem
      * Returns the discount cost of the item
      * @return integer|float
      */
-    public function getDiscountCost()
+    public function getOldPriceCost()
     {
-        return ceil($this->getDiscount() * $this->quantity);
+        return ceil($this->getOldPrice() * $this->quantity);
     }
 
     /**
