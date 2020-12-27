@@ -51,6 +51,20 @@ class CartItem
             return $this->product->{$this->params['productFieldPrice']};
         }
     }
+    
+    /**
+     * Returns the discount price of the item
+     * @return integer|float
+     */
+    public function getDiscount()
+    {
+        if ($this->getOptions()) {
+            $prices = array_sum($this->getOptionsPrices());
+            return $this->product->{$this->params['productFieldDiscount']} + $prices;
+        } else {
+            return $this->product->{$this->params['productFieldDiscount']};
+        }
+    }
 
     /**
      * Returns the product, AR model
