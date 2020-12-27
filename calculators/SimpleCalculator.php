@@ -25,7 +25,7 @@ class SimpleCalculator implements CalculatorInterface
     {
         $cost = 0;
         foreach ($items as $item) {
-            $cost += $item->getDiscountCost();
+            $cost += $item->getOldPriceCost();
         }
         return $cost;
     }
