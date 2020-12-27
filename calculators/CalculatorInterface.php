@@ -13,7 +13,7 @@ interface CalculatorInterface
      * @param \devanych\cart\CartItem[] $items
      * @return integer
      */
-    public function getDiscountCost(array $items);
+    public function getOldPriceCost(array $items);
     /**
      * @param \devanych\cart\CartItem[] $items
      * @return integer
