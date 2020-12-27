@@ -31,6 +31,7 @@ class Cart extends BaseObject
         'productClass' => 'app\model\Product',
         'productFieldId' => 'id',
         'productFieldPrice' => 'price',
+        'productFieldDiscount' => 'old_price',
     ];
 
     /**
@@ -224,6 +225,16 @@ class Cart extends BaseObject
     {
         $this->loadItems();
         return $this->calculator->getCost($this->items);
+    }
+
+    /**
+     * Returns total disocunt cost all items from the cart
+     * @return integer
+     */
+    public function getTotalDiscountCost()
+    {
+        $this->loadItems();
+        return $this->calculator->getDiscountCost($this->items);
     }
 
     /**
