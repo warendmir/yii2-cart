@@ -2,60 +2,32 @@
 
 namespace devanych\cart\calculators;
 
-class SimpleCalculator implements CalculatorInterface
+interface CalculatorInterface
 {
     /**
      * @param \devanych\cart\CartItem[] $items
      * @return integer
      */
-    public function getCost(array $items)
-    {
-        $cost = 0;
-        foreach ($items as $item) {
-            $cost += $item->getCost();
-        }
-        return $cost;
-    }
-
+    public function getCost(array $items);
     /**
      * @param \devanych\cart\CartItem[] $items
      * @return integer
      */
-    public function getOldPriceCost(array $items)
-    {
-        $cost = 0;
-        foreach ($items as $item) {
-            $cost += $item->getOldPriceCost();
-        }
-        return $cost;
-    }
+    public function getOldPriceCost(array $items);
     /**
      * @param \devanych\cart\CartItem[] $items
      * @return integer
      */
-    public function getPriceCostWithoutDiscount(array $items)
-    {
-        $cost = 0;
-        foreach ($items as $item) {
-            if ($item->getOldPriceCost()){
-                $cost += $item->getOldPriceCost();
-            } else {
-                $cost += $item->getCost();
-            }
-        }
-        return $cost;
-    }
-
+    public function getPriceCostWithoutDiscount(array $items);
+    /**
+     * @param \devanych\cart\CartItem[] $items
+     * @param integer $discount
+     * @return integer
+     */
+    public function getPriceCostWithoutDiscounted(array $items,$discount);
     /**
      * @param \devanych\cart\CartItem[] $items
      * @return integer
      */
-    public function getCount(array $items)
-    {
-        $count = 0;
-        foreach ($items as $item) {
-            $count += $item->getQuantity();
-        }
-        return $count;
-    }
+    public function getCount(array $items);
 }
