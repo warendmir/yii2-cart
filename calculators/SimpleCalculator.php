@@ -29,6 +29,41 @@ class SimpleCalculator implements CalculatorInterface
         }
         return $cost;
     }
+    /**
+     * @param \devanych\cart\CartItem[] $items
+     * @return integer
+     */
+    public function getPriceCostWithoutDiscount(array $items)
+    {
+        $cost = 0;
+        foreach ($items as $item) {
+            if ($item->getOldPriceCost()){
+                $cost += $item->getOldPriceCost();
+            } else {
+                $cost += $item->getCost();
+            }
+        }
+        return $cost;
+    }
+    /**
+     * @param \devanych\cart\CartItem[] $items
+     * @param integer $discount
+     * @return integer
+     */
+    public function getPriceCostWithoutDiscounted(array $items, $discount)
+    {
+        $cost = 0;
+        foreach ($items as $item) {
+            $old = $item->getOldPriceCost();
+            $cur = $item->getCost();
+            if ($old){
+                $cost += $cur;
+            } else {
+                $cost += $cur-(($cur/100)*$discount);
+            }
+        }
+        return $cost;
+    }
 
     /**
      * @param \devanych\cart\CartItem[] $items
