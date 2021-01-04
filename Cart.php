@@ -238,6 +238,17 @@ class Cart extends BaseObject
     }
 
     /**
+     * Returns total cost all items from the cart without discount
+     * @return integer
+     */
+    public function getTotalPriceCostWithoutDiscount()
+    {
+        $this->loadItems();
+        return $this->calculator->getPriceCostWithoutDiscount($this->items);
+    }
+
+
+    /**
      * Returns total count all items from the cart
      * @return integer
      */
