@@ -58,11 +58,15 @@ class CartItem
      */
     public function getOldPrice()
     {
-        if ($this->getOptions()) {
-            $prices = array_sum($this->getOptionsPrices());
-            return $this->product->{$this->params['productFieldOldPrice']} + $prices;
+        if ($this->product->{$this->params['productFieldOldPrice']}){
+            if ($this->getOptions()) {
+                $prices = array_sum($this->getOptionsPrices());
+                return $this->product->{$this->params['productFieldOldPrice']} + $prices;
+            } else {
+                return $this->product->{$this->params['productFieldOldPrice']};
+            }
         } else {
-            return $this->product->{$this->params['productFieldOldPrice']};
+            return 0;
         }
     }
 
