@@ -37,7 +37,7 @@ class SimpleCalculator implements CalculatorInterface
     {
         $cost = 0;
         foreach ($items as $item) {
-            if ($item->getOldPriceCost()){
+            if ($item->getIsOldPrice()){
                 $cost += $item->getOldPriceCost();
             } else {
                 $cost += $item->getCost();
